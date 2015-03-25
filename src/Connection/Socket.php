@@ -79,7 +79,7 @@ class Socket {
 	public function read($length) {
 		$data = socket_read($this->_socket, $length);
 		
-		if ($data === false){
+		if ($data === false || ($length > 0 && $data === '')){
 			$errorCode = socket_last_error($this->_socket);
 			throw new SocketException(socket_strerror($errorCode), $errorCode);
 		}
@@ -89,7 +89,7 @@ class Socket {
 		while($remainder > 0) {
 			$readData = socket_read($this->_socket, $remainder);
 	
-			if ($readData === false){
+			if ($readData === false || ($remainder > 0 && $readData === '')){
 				$errorCode = socket_last_error($this->_socket);
 				throw new SocketException(socket_strerror($errorCode), $errorCode);
 			}
